@@ -2,6 +2,7 @@ backend:
   name: github
   repo: shubhritjain/shubhritjain.github.io  # ← update this
   branch: master
+  site_domain: remarkable-starburst-3884fc.netlify.app
 
 media_folder: public/images
 public_folder: /images
