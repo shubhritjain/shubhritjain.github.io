@@ -1,0 +1,37 @@
+backend:
+  name: github
+  repo: shubhritjain/shubhritjain.github.io  # ← update this
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: thoughts
+    label: Thoughts
+    folder: src/content/thoughts
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Tags, name: tags, widget: list, required: false }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: projects
+    label: Projects
+    folder: src/content/projects
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: string }
+      - label: Status
+        name: status
+        widget: select
+        options: [active, shipped, paused]
+        default: active
+      - { label: Featured on homepage, name: featured, widget: boolean, default: false, required: false }
+      - { label: Tags, name: tags, widget: list, required: false }
+      - { label: Project URL, name: url, widget: string, required: false }
+      - { label: Body, name: body, widget: markdown }

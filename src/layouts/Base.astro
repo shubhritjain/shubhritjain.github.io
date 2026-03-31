@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+const { title = 'My Blog', description = '' } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="/" class="site-name">Random Experiments</a>
+      <nav>
+        <a href="/thoughts" class:list={['nav-link', { active: currentPath.startsWith('/thoughts') }]}>thoughts</a>
+        <a href="/projects" class:list={['nav-link', { active: currentPath.startsWith('/projects') }]}>projects</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>made with anxious energy</span>
+    </div>
+  </footer>
+
+</body>
+</html>
+
+<style>
+  header {
+    padding: 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--cream-dark);
+    position: sticky;
+    top: 0;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+  }
+  .header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .site-name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .site-name:hover { color: var(--accent); }
+  nav { display: flex; gap: 0.25rem; }
+  .nav-link {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--ink-muted);
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--ink); background: var(--cream-dark); }
+  .nav-link.active { color: var(--ink); background: var(--cream-dark); font-weight: 500; }
+
+  main {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--cream-dark);
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .footer-inner {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--ink-hint);
+    font-style: italic;
+  }
+</style>

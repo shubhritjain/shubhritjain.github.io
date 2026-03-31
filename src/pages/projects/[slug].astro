@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const projects = await Astro.glob('../../content/projects/*.md');
+  return projects.map(project => ({
+    params: { slug: project.file.split('/').pop().replace('.md', '') },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { title, description, status, tags, url } = project.frontmatter;
+const Content = project.Content;
+---
+
+<Base title={title}>
+  <article>
+    <header>
+      <div class="meta">
+        <span class={`status status-${status}`}>{status}</span>
+        {tags?.map(tag => <span class="tag">{tag}</span>)}
+      </div>
+      <h1>{title}</h1>
+      {description && <p class="description">{description}</p>}
+      {url && <a href={url} target="_blank" rel="noopener" class="project-link">visit project ↗</a>}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    <footer>
+      <a href="/projects" class="back">← back to projects</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  article { max-width: 620px; }
+  header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--cream-dark); }
+  .meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+
+  .status {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .status-active { background: var(--green-soft); color: var(--green); }
+  .status-shipped { background: var(--accent-soft); color: var(--brown); }
+  .status-paused { background: var(--cream-dark); color: var(--ink-hint); }
+
+  .tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    background: var(--cream-dark);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .description {
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .project-link {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  footer { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--cream-dark); }
+  .back { font-family: var(--sans); font-size: 0.85rem; color: var(--ink-muted); }
+  .back:hover { color: var(--accent); }
+</style>

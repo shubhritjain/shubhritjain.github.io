@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+
+const thoughts = await Astro.glob('../content/thoughts/*.md');
+const projects = await Astro.glob('../content/projects/*.md');
+
+const recentThoughts = thoughts
+  .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
+  .slice(0, 3);
+
+const featuredProjects = projects
+  .filter(p => p.frontmatter.featured)
+  .slice(0, 2);
+---
+
+<Base title="Home">
+  <section class="intro">
+    <p class="greeting">Hello, I'm</p>
+    <h1>Shubhrit</h1>
+    <p class="bio">
+      I created this to channel my late Quarter-life crisis <em>Thanks AI!</em>
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>recent thoughts</h2>
+      <a href="/thoughts" class="see-all">all thoughts →</a>
+    </div>
+    <div class="post-list">
+      {recentThoughts.map(post => (
+        <a href={post.url} class="post-row">
+          <span class="post-title">{post.frontmatter.title}</span>
+          <span class="post-date">{new Date(post.frontmatter.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+        </a>
+      ))}
+      {recentThoughts.length === 0 && (
+        <p class="empty">No thoughts yet — start writing!</p>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>projects</h2>
+      <a href="/projects" class="see-all">all projects →</a>
+    </div>
+    <div class="project-grid">
+      {featuredProjects.map(p => (
+        <a href={p.url} class="project-card">
+          <span class="project-tag">{p.frontmatter.status}</span>
+          <h3>{p.frontmatter.title}</h3>
+          <p>{p.frontmatter.description}</p>
+        </a>
+      ))}
+      {featuredProjects.length === 0 && (
+        <p class="empty">No projects yet — add your first one!</p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--cream-dark);
+    margin-bottom: 3.5rem;
+  }
+  .greeting {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.4rem;
+  }
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+  .bio {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+  .bio code {
+    font-size: 0.85em;
+    background: var(--cream-dark);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .section { margin-bottom: 3.5rem; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  h2 {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+  }
+  .see-all {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+  .see-all:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .post-list { display: flex; flex-direction: column; gap: 0; }
+  .post-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--cream-dark);
+    transition: all 0.15s;
+  }
+  .post-row:first-child { border-top: 1px solid var(--cream-dark); }
+  .post-row:hover .post-title { color: var(--accent); }
+  .post-title { font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+  .post-date { font-family: var(--sans); font-size: 0.8rem; color: var(--ink-hint); white-space: nowrap; }
+
+  .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .project-card {
+    background: var(--cream-dark);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .project-card:hover { border-color: var(--brown-light); background: white; }
+  .project-tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brown);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 0.6rem;
+  }
+  .project-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+  .project-card p { font-family: var(--sans); font-size: 0.85rem; color: var(--ink-muted); line-height: 1.5; }
+
+  .empty { font-family: var(--sans); font-size: 0.9rem; color: var(--ink-hint); font-style: italic; }
+
+  @media (max-width: 500px) {
+    h1 { font-size: 2rem; }
+    .project-grid { grid-template-columns: 1fr; }
+  }
+</style>

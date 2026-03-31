@@ -1,0 +1,99 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const posts = await Astro.glob('../../content/thoughts/*.md');
+const sorted = posts.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
+
+// Group by year
+const byYear = sorted.reduce((acc, post) => {
+  const year = new Date(post.frontmatter.date).getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).sort((a, b) => b - a);
+---
+
+<Base title="Thoughts">
+  <div class="page-header">
+    <h1>Thoughts</h1>
+    <p>Essays, ideas, and things worth writing down.</p>
+  </div>
+
+  {years.length === 0 && (
+    <p class="empty">Nothing here yet. Go to <a href="/admin">/admin</a> to write your first post.</p>
+  )}
+
+  {years.map(year => (
+    <div class="year-group">
+      <span class="year-label">{year}</span>
+      <div class="post-list">
+        {byYear[year].map(post => (
+          <a href={post.url} class="post-row">
+            <span class="post-title">{post.frontmatter.title}</span>
+            <span class="post-meta">
+              {post.frontmatter.tags?.map(tag => (
+                <span class="tag">{tag}</span>
+              ))}
+              <span class="date">
+                {new Date(post.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              </span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+</Base>
+
+<style>
+  .page-header { margin-bottom: 3rem; }
+  .page-header h1 {
+    font-size: 2.2rem;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .page-header p { font-family: var(--sans); color: var(--ink-muted); font-size: 0.95rem; }
+
+  .year-group { margin-bottom: 2.5rem; }
+  .year-label {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-hint);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-list { display: flex; flex-direction: column; }
+  .post-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--cream-dark);
+    transition: 0.15s;
+  }
+  .post-row:first-child { border-top: 1px solid var(--cream-dark); }
+  .post-row:hover .post-title { color: var(--accent); }
+
+  .post-title { font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+  .post-meta { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+  .tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--brown);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .date { font-family: var(--sans); font-size: 0.8rem; color: var(--ink-hint); }
+
+  .empty { font-family: var(--sans); font-size: 0.9rem; color: var(--ink-hint); font-style: italic; }
+  .empty a { color: var(--accent); text-decoration: underline; }
+</style>

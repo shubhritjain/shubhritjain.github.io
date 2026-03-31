@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cream: #faf7f2;
+  --cream-dark: #f0ebe0;
+  --brown-light: #c8b89a;
+  --brown: #8c7355;
+  --brown-dark: #5c4a32;
+  --ink: #2a1f14;
+  --ink-soft: #4a3f34;
+  --ink-muted: #7a6e64;
+  --ink-hint: #a89e94;
+  --accent: #c46b3a;
+  --accent-soft: #f5ebe3;
+  --green: #4a7c59;
+  --green-soft: #e8f0ea;
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --max-w: 680px;
+  --radius: 8px;
+}
+
+html {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--cream);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+p { color: var(--ink-soft); }
+
+.prose h2 { font-size: 1.4rem; margin: 2.5rem 0 0.75rem; }
+.prose h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+.prose p  { margin-bottom: 1.4rem; }
+.prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.4rem; color: var(--ink-soft); }
+.prose li { margin-bottom: 0.4rem; }
+.prose blockquote {
+  border-left: 3px solid var(--brown-light);
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--ink-muted);
+}
+.prose code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85em;
+  background: var(--cream-dark);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.prose pre {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 2rem 0;
+  font-size: 0.85rem;
+}
+.prose pre code { background: none; padding: 0; color: inherit; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose hr { border: none; border-top: 1px solid var(--cream-dark); margin: 2.5rem 0; }

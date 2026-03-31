@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob('../../content/thoughts/*.md');
+  return posts.map(post => ({
+    params: { slug: post.file.split('/').pop().replace('.md', '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, date, tags } = post.frontmatter;
+const Content = post.Content;
+---
+
+<Base title={title}>
+  <article>
+    <header>
+      <div class="meta">
+        <time>{new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+        {tags?.map(tag => <span class="tag">{tag}</span>)}
+      </div>
+      <h1>{title}</h1>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    <footer>
+      <a href="/thoughts" class="back">← back to thoughts</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  article { max-width: 620px; }
+  header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--cream-dark); }
+  .meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+  time { font-family: var(--sans); font-size: 0.82rem; color: var(--ink-hint); }
+  .tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--brown);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  footer { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--cream-dark); }
+  .back { font-family: var(--sans); font-size: 0.85rem; color: var(--ink-muted); }
+  .back:hover { color: var(--accent); }
+</style>
