@@ -2,7 +2,6 @@ backend:
   name: github
   repo: shubhritjain/shubhritjain.github.io  # ← update this
   branch: master
-  site_domain: https://sveltia-cms-auth.pages.dev
   
 
 media_folder: public/images
