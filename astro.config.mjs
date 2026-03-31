@@ -3,6 +3,6 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   integrations: [mdx()],
-  site: 'https://shubhritjain.github.io',
+  site: 'https://shubhritjain.vercel.app',
   base: '/',
 });
