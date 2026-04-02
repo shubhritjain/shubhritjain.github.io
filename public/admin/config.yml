@@ -2,7 +2,7 @@ backend:
   name: github
   repo: shubhritjain/shubhritjain.github.io  # ← update this
   branch: master
-  auth_type: implicit
+  auth_type: pkce
   app_id: Ov23liZC7q9Qe4tE9XDX
   
 
